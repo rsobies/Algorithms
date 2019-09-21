@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 
+/// <summary>
+/// class detecting memory leaks
+/// it creates memory snapshots and compares them in the destructor
+/// this class should be declared as a member of Test class to provide memory check
+/// </summary>
 class CrtCheckMemory
 {
 public:
@@ -34,7 +39,10 @@ class AlgorithmsUnit: public testing::Test{
 public:
 
 private:
-
+	/// <summary>
+	/// check memeber is created at the beginnig of each test method
+	/// and is destroyed at the end of test method
+	/// </summary>
 	CrtCheckMemory check;
 };
 
