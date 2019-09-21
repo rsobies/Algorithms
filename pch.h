@@ -18,6 +18,7 @@
 #include <tuple>
 #include <limits>
 #include <assert.h>
+#include <deque>
 #include "types.h"
 using namespace std;
 

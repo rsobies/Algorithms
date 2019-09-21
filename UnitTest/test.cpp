@@ -93,14 +93,27 @@ TEST_F(AlgorithmsUnit, dijsktra) {
 
 	graf[5]->addNeighbour(graf[0], 6);
 	graf[5]->addNeighbour(graf[3], 1);
-	
-	auto cost=findShortestPath(graf, 0, 3);
+	{
+		const auto& [path, cost] = findShortestPath(graf, 0, 3);
 
-	ASSERT_EQ(cost, 6);
+		ASSERT_EQ(cost, 6);
 
-	cost = findShortestPath(graf, 1, 0);
+		ASSERT_EQ(path.size(), 4);
+
+		ASSERT_EQ(path[0], 0);
+		ASSERT_EQ(path[1], 4);
+	}
+
+	const auto& [path, cost] = findShortestPath(graf, 1, 0);
 
 	ASSERT_EQ(cost, 8);
+
+	ASSERT_EQ(path.size(), 4);
+
+	ASSERT_EQ(path[0], 1);
+	ASSERT_EQ(path[1], 2);
+	ASSERT_EQ(path[2], 5);
+	ASSERT_EQ(path[3], 0);
 }
 
 TEST_F(AlgorithmsUnit, dijsktra2) {
@@ -125,8 +138,8 @@ TEST_F(AlgorithmsUnit, dijsktra2) {
 	graf[4]->addNeighbour(graf[1], 3);
 	graf[4]->addNeighbour(graf[2], 9);
 	graf[4]->addNeighbour(graf[3], 2);
-
-	auto cost = findShortestPath(graf, 0, 3);
+	
+	const auto& [path, cost] = findShortestPath(graf, 0, 3);
 
 	ASSERT_EQ(cost, 7);
 }

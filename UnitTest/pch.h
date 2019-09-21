@@ -14,5 +14,6 @@
 #include <unordered_map>
 #include <tuple>
 #include <limits>
+#include <deque>
 #include "../types.h"
 using namespace std;

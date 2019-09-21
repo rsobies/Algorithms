@@ -8,7 +8,7 @@
 /// <param name="graph">definition of graph</param>
 /// <param name="startNodeId">starting node</param>
 /// <param name="endNodeId">last node in searching path</param>
-/// <returns>smallest cost of found path</returns>
+/// <returns>tuple: shortest path(deque) and cost of the path</returns>
 template <typename T>
 auto findShortestPath(const vector<shared_ptr<NodeInPath<T>>>& graph,
 	id_t startNodeId, id_t endNodeId)
@@ -39,6 +39,8 @@ auto findShortestPath(const vector<shared_ptr<NodeInPath<T>>>& graph,
 			}
 		}
 	}
+	auto path=dijstraSet.getPath(endNodeId);
+	auto minCost = dijstraSet.getCost(endNodeId);
 
-	return dijstraSet.getCost(endNodeId);
+	return tuple<decltype(path), decltype(minCost)>(path, minCost);
 }

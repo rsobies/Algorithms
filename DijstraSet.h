@@ -50,6 +50,13 @@ public:
 	/// <returns>is set empty</returns>
 	bool isEmpty();
 
+	/// <summary>
+	/// gets path from start node to end node
+	/// </summary>
+	/// <param name="endNode">id of end node</param>
+	/// <returns>list of ids in path</returns>
+	deque<id_t> getPath(id_t endNode);
+
 private:
 	
 	/// <summary>
@@ -128,4 +135,22 @@ template<typename T>
 inline bool DijstraSet<T>::isEmpty()
 {
 	return ids.empty();
+}
+
+template<typename T>
+inline deque<id_t> DijstraSet<T>::getPath(id_t endNode)
+{
+	auto it=prevNodes.find(endNode);
+
+	deque<id_t> path;
+	
+	while (it != prevNodes.end()) {
+		auto prevId = it->second;
+		path.push_front(prevId);
+		it= prevNodes.find(prevId);
+	}
+
+	path.push_back(endNode);
+
+	return path;
 }
