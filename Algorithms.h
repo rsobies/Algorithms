@@ -11,7 +11,7 @@ auto findShortestPath(const vector<shared_ptr<NodeInPath<T>>>& graph,
 
 	DijstraSet<T> dijstraSet(graph.size());
 
-	dijstraSet.put(startNodeId, 0);
+	dijstraSet.setCost(startNodeId, 0);
 	
 	while (!dijstraSet.isEmpty()) {
 
@@ -28,7 +28,7 @@ auto findShortestPath(const vector<shared_ptr<NodeInPath<T>>>& graph,
 
 				auto neigbourId = neighbour->getId();
 				if (dijstraSet.getCost(neigbourId) > newNeigbourCost) {
-					dijstraSet.put(neigbourId, newNeigbourCost, processNodeId);
+					dijstraSet.setCost(neigbourId, newNeigbourCost, processNodeId);
 				}
 			}
 		}

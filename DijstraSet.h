@@ -2,40 +2,76 @@
 template <typename T>
 using idAndCost_t=tuple<id_t, T>;
 
+/// <summary>
+/// class to hold data related with dijstra algorithm
+/// </summary>
 template <typename T>
 class DijstraSet
 {
 	
 public:
+	/// <summary>
+	/// constructor
+	/// </summary>
+	/// <param name="size">number of nodes in graph</param>
 	DijstraSet(id_t size);
-	void put(id_t id, T cost);
-	void put(id_t id, T cost, id_t prev);
+
+	/// <summary>
+	/// set new cost of node
+	/// </summary>
+	/// <param name="id">id of node</param>
+	/// <param name="cost">new cost</param>
+	void setCost(id_t id, T cost);
+
+	/// <summary>
+	/// set a new cost of node, and previous node
+	/// </summary>
+	/// <param name="id">id of node</param>
+	/// <param name="cost">new cost</param>
+	/// <param name="prev">id of previous node in path</param>
+	void setCost(id_t id, T cost, id_t prev);
+
+	/// <summary>
+	/// returns cost of node
+	/// </summary>
+	/// <param name="id">selected node</param>
+	/// <returns>cost of node</returns>
 	T getCost(id_t id);
+
+	/// <summary>
+	/// get node with smallest cost
+	/// </summary>
+	/// <returns>tuple with id and cost</returns>
 	idAndCost_t<T> pop();
 
+	/// <summary>
+	/// whater the set is empty which means end of iteration
+	/// in dijstra algorithm
+	/// </summary>
+	/// <returns>is set empty</returns>
 	bool isEmpty();
 
 private:
 	
-	/**
-		set of nodes that was not prossed yet
-	*/
+	/// <summary>
+	/// set of nodes that was not processed yet
+	/// </summary>
 	list<id_t> ids;
 
-	/**
-	 set of all nodes with cost
-	*/
+	/// <summary>
+	/// set of all nodes with cost
+	/// </summary>
 	unordered_map<id_t, T> costs;
 
-	/**
-		path from start node to random node
-	*/
+	/// <summary>
+	/// path from start node to random node
+	/// </summary>
 	unordered_map<id_t, id_t> prevNodes;
 
-	/**
-		subset of ids, only nodes with computed cost
-		used to find node with smalest cost
-	*/	
+	/// <summary>
+	/// subset of ids list, it holds only nodes with computed cost
+	/// this list is used to find node with smallest cost in costs map
+	/// </summary>
 	set<id_t> idWithValue;
 };
 
@@ -49,7 +85,7 @@ inline DijstraSet<T>::DijstraSet(id_t size)
 }
 
 template<typename T>
-inline void DijstraSet<T>::put(id_t id, T cost)
+inline void DijstraSet<T>::setCost(id_t id, T cost)
 {
 	assert(id < costs.size());
 	costs[id] = cost;
@@ -58,9 +94,9 @@ inline void DijstraSet<T>::put(id_t id, T cost)
 }
 
 template<typename T>
-inline void DijstraSet<T>::put(id_t id, T cost, id_t prev)
+inline void DijstraSet<T>::setCost(id_t id, T cost, id_t prev)
 {
-	put(id, cost);
+	setCost(id, cost);
 	prevNodes[id] = prev;
 }
 

@@ -45,8 +45,8 @@ TEST_F(AlgorithmsUnit, dijsktraSet) {
 
 	ASSERT_FALSE(dset.isEmpty());
 
-	dset.put(0, 2);
-	dset.put(1, 5);
+	dset.setCost(0, 2);
+	dset.setCost(1, 5);
 	{
 		auto [id, cost] = dset.pop();
 
