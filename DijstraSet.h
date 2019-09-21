@@ -8,7 +8,6 @@ using idAndCost_t=tuple<id_t, T>;
 template <typename T>
 class DijstraSet
 {
-	
 public:
 	/// <summary>
 	/// constructor
@@ -70,7 +69,7 @@ private:
 
 	/// <summary>
 	/// subset of ids list, it holds only nodes with computed cost
-	/// this list is used to find node with smallest cost in costs map
+	/// this list is used to find node with smallest cost that are still in ids
 	/// </summary>
 	set<id_t> idWithValue;
 };
