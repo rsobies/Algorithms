@@ -3,10 +3,11 @@
 /// <summary>
 /// data class describing a node
 /// </summary>
-template <typename T>
+/// <typeparm name="Cost_t">type of cost betwean two nodes</typeparm>
+template <typename Cost_t>
 class NodeInPath
 {
-	using NodeWithCost = tuple<weak_ptr<NodeInPath<T>>, T>;
+	using NodeWithCost = tuple<weak_ptr<NodeInPath<Cost_t>>, Cost_t>;
 public:
 	
 	/// <summary>
@@ -26,7 +27,7 @@ public:
 	/// </summary>
 	/// <param name="node">neighbour node</param>
 	/// <param name="pathCost">cost connected with this neigbour</param>
-	void addNeighbour(shared_ptr<NodeInPath<T>> node, T pathCost);
+	void addNeighbour(shared_ptr<NodeInPath<Cost_t>> node, Cost_t pathCost);
 	
 	/// <summary>
 	/// 
@@ -46,14 +47,14 @@ private:
 	vector<NodeWithCost> neighbours;
 };
 
-template<typename T>
-inline id_t NodeInPath<T>::getId()
+template<typename Cost_t>
+inline id_t NodeInPath<Cost_t>::getId()
 {
 	return id;
 }
 
-template<typename T>
-inline void NodeInPath<T>::addNeighbour(shared_ptr<NodeInPath<T>> node, T pathCost)
+template<typename Cost_t>
+inline void NodeInPath<Cost_t>::addNeighbour(shared_ptr<NodeInPath<Cost_t>> node, Cost_t pathCost)
 {
 	neighbours.push_back(NodeWithCost(node, pathCost));
 }

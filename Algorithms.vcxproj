@@ -158,11 +158,13 @@
     <ClInclude Include="Algorithms.h" />
     <ClInclude Include="DijstraSet.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Heap.h" />
     <ClInclude Include="NodeInPath.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Heap.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,11 +1,12 @@
 #pragma once
-template <typename T>
-using idAndCost_t=tuple<id_t, T>;
+template <typename Cost_t>
+using idAndCost_t=tuple<id_t, Cost_t>;
 
 /// <summary>
 /// class to hold data related with dijstra algorithm
 /// </summary>
-template <typename T>
+/// <typeparm name="Cost_t">type of cost betwean two nodes</typeparm>
+template <typename Cost_t>
 class DijstraSet
 {
 public:
@@ -20,7 +21,7 @@ public:
 	/// </summary>
 	/// <param name="id">id of node</param>
 	/// <param name="cost">new cost</param>
-	void setCost(id_t id, T cost);
+	void setCost(id_t id, Cost_t cost);
 
 	/// <summary>
 	/// set a new cost of node, and previous node
@@ -28,20 +29,20 @@ public:
 	/// <param name="id">id of node</param>
 	/// <param name="cost">new cost</param>
 	/// <param name="prev">id of previous node in path</param>
-	void setCost(id_t id, T cost, id_t prev);
+	void setCost(id_t id, Cost_t cost, id_t prev);
 
 	/// <summary>
 	/// returns cost of node
 	/// </summary>
 	/// <param name="id">selected node</param>
 	/// <returns>cost of node</returns>
-	T getCost(id_t id);
+	Cost_t getCost(id_t id);
 
 	/// <summary>
 	/// get node with smallest cost
 	/// </summary>
 	/// <returns>tuple with id and cost</returns>
-	idAndCost_t<T> pop();
+	idAndCost_t<Cost_t> pop();
 
 	/// <summary>
 	/// whater the set is empty which means end of iteration
@@ -67,7 +68,7 @@ private:
 	/// <summary>
 	/// set of all nodes with cost
 	/// </summary>
-	unordered_map<id_t, T> costs;
+	unordered_map<id_t, Cost_t> costs;
 
 	/// <summary>
 	/// path from start node to random node
@@ -81,17 +82,17 @@ private:
 	set<id_t> idWithValue;
 };
 
-template<typename T>
-inline DijstraSet<T>::DijstraSet(id_t size)
+template<typename Cost_t>
+inline DijstraSet<Cost_t>::DijstraSet(id_t size)
 {
 	for (id_t i = 0; i < size; i++) {
 		ids.push_back(i);
-		costs[i] = numeric_limits<T>::max();
+		costs[i] = numeric_limits<Cost_t>::max();
 	}
 }
 
-template<typename T>
-inline void DijstraSet<T>::setCost(id_t id, T cost)
+template<typename Cost_t>
+inline void DijstraSet<Cost_t>::setCost(id_t id, Cost_t cost)
 {
 	assert(id < costs.size());
 	costs[id] = cost;
@@ -99,21 +100,21 @@ inline void DijstraSet<T>::setCost(id_t id, T cost)
 	idWithValue.insert(id);
 }
 
-template<typename T>
-inline void DijstraSet<T>::setCost(id_t id, T cost, id_t prev)
+template<typename Cost_t>
+inline void DijstraSet<Cost_t>::setCost(id_t id, Cost_t cost, id_t prev)
 {
 	setCost(id, cost);
 	prevNodes[id] = prev;
 }
 
-template<typename T>
-inline T DijstraSet<T>::getCost(id_t id)
+template<typename Cost_t>
+inline Cost_t DijstraSet<Cost_t>::getCost(id_t id)
 {
 	return costs[id];
 }
 
-template<typename T>
-inline idAndCost_t<T> DijstraSet<T>::pop()
+template<typename Cost_t>
+inline idAndCost_t<Cost_t> DijstraSet<Cost_t>::pop()
 {	
 	auto minCostId = *idWithValue.begin();
 	auto minCost = costs[minCostId];
@@ -128,17 +129,17 @@ inline idAndCost_t<T> DijstraSet<T>::pop()
 	ids.remove(minCostId);
 	idWithValue.erase(idWithValue.find(minCostId));
 
-	return idAndCost_t<T>(minCostId, minCost);
+	return idAndCost_t<Cost_t>(minCostId, minCost);
 }
 
-template<typename T>
-inline bool DijstraSet<T>::isEmpty()
+template<typename Cost_t>
+inline bool DijstraSet<Cost_t>::isEmpty()
 {
 	return ids.empty();
 }
 
-template<typename T>
-inline deque<id_t> DijstraSet<T>::getPath(id_t endNode)
+template<typename Cost_t>
+inline deque<id_t> DijstraSet<Cost_t>::getPath(id_t endNode)
 {
 	auto it=prevNodes.find(endNode);
 

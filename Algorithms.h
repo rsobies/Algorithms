@@ -8,14 +8,15 @@
 /// <param name="graph">definition of graph</param>
 /// <param name="startNodeId">starting node</param>
 /// <param name="endNodeId">last node in searching path</param>
+/// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
 /// <returns>tuple: shortest path(deque) and cost of the path</returns>
-template <typename T>
-auto findShortestPath(const vector<shared_ptr<NodeInPath<T>>>& graph,
+template <typename Cost_t>
+auto findShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph,
 	id_t startNodeId, id_t endNodeId)
 {
-	static_assert(is_arithmetic<T>::value, "type T must be arithmetic");
+	static_assert(is_arithmetic<Cost_t>::value, "type T must be arithmetic");
 
-	DijstraSet<T> dijstraSet(graph.size());
+	DijstraSet<Cost_t> dijstraSet(graph.size());
 
 	dijstraSet.setCost(startNodeId, 0);
 	
