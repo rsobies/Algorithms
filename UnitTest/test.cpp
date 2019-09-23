@@ -2,6 +2,7 @@
 #include "../NodeInPath.h"
 #include "../Algorithms.h"
 #include "../DijstraSet.h"
+#include <algorithm> 
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -72,6 +73,8 @@ TEST_F(AlgorithmsUnit, dijsktraSet) {
 	ASSERT_TRUE(dset.isEmpty());
 
 }
+
+
 
 TEST_F(AlgorithmsUnit, dijsktra) {
 	

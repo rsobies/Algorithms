@@ -19,6 +19,7 @@
 #include <limits>
 #include <assert.h>
 #include <deque>
+#include <algorithm>
 #include "types.h"
 using namespace std;
 

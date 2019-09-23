@@ -116,18 +116,15 @@ inline Cost_t DijstraSet<Cost_t>::getCost(id_t id)
 template<typename Cost_t>
 inline idAndCost_t<Cost_t> DijstraSet<Cost_t>::pop()
 {	
-	auto minCostId = *idWithValue.begin();
+	auto compFunc = [this](id_t p, id_t q) {return costs[p] < costs[q]; };
+
+	auto itMin=min_element(idWithValue.begin(), idWithValue.end(), compFunc);
+
+	auto minCostId = *itMin;
 	auto minCost = costs[minCostId];
 
-	for (auto id : idWithValue) {
-		if (costs[id] < minCost) {
-			minCost = costs[id];
-			minCostId = id;
-		}
-	}
-
 	ids.remove(minCostId);
-	idWithValue.erase(idWithValue.find(minCostId));
+	idWithValue.erase(itMin);
 
 	return idAndCost_t<Cost_t>(minCostId, minCost);
 }
