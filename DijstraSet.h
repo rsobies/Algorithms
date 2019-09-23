@@ -39,7 +39,7 @@ public:
 	Cost_t getCost(id_t id);
 
 	/// <summary>
-	/// get node with smallest cost
+	/// gets node with smallest cost and removes it from releted lists
 	/// </summary>
 	/// <returns>tuple with id and cost</returns>
 	idAndCost_t<Cost_t> pop();
