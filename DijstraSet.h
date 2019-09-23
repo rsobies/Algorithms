@@ -63,7 +63,7 @@ private:
 	/// <summary>
 	/// set of nodes that was not processed yet
 	/// </summary>
-	list<id_t> ids;
+	set<id_t> ids;
 
 	/// <summary>
 	/// set of all nodes with cost
@@ -86,7 +86,7 @@ template<typename Cost_t>
 inline DijstraSet<Cost_t>::DijstraSet(id_t size)
 {
 	for (id_t i = 0; i < size; i++) {
-		ids.push_back(i);
+		ids.insert(i);
 		costs[i] = numeric_limits<Cost_t>::max();
 	}
 }
@@ -123,7 +123,7 @@ inline idAndCost_t<Cost_t> DijstraSet<Cost_t>::pop()
 	auto minCostId = *itMin;
 	auto minCost = costs[minCostId];
 
-	ids.remove(minCostId);
+	ids.erase(minCostId);
 	idWithValue.erase(itMin);
 
 	return idAndCost_t<Cost_t>(minCostId, minCost);
