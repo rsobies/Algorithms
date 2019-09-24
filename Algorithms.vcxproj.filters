@@ -27,9 +27,6 @@
     <ClInclude Include="Algorithms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DijstraSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BellmanFordSet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DijskstraSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
