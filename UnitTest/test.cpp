@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "../NodeInPath.h"
 #include "../Algorithms.h"
 #include <algorithm> 
 
@@ -10,14 +9,16 @@
 /// <summary>
 /// class detecting memory leaks
 /// it creates memory snapshots and compares them in the destructor
-/// this class should be declared as a member of Test class to provide memory check
 /// </summary>
+/// <remarks>
+/// in order to provide automatic 
+/// memory check for each testing method, set this class
+/// as member of Test class
+/// </remarks>
 class CrtCheckMemory
 {
 public:
-	_CrtMemState state1;
-	_CrtMemState state2;
-	_CrtMemState state3;
+	
 	CrtCheckMemory()
 	{		
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -26,6 +27,9 @@ public:
 	}
 	~CrtCheckMemory()
 	{
+		_CrtMemState state2;
+		_CrtMemState state3;
+
 		_CrtMemCheckpoint(&state2);
 
 		EXPECT_EQ(0, _CrtMemDifference(&state3, &state1, &state2));
@@ -33,6 +37,8 @@ public:
 		if (_CrtMemDifference(&state3, &state1, &state2))
 			_CrtMemDumpStatistics(&state3);
 	}
+private:
+	_CrtMemState state1;
 };
 
 class AlgorithmsUnit: public testing::Test{
