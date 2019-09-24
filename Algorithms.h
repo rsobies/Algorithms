@@ -48,6 +48,12 @@ auto dijstraShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph,
 	return tuple<decltype(path), decltype(minCost)>(path, minCost);
 }
 
+/// <summary>
+///  recursive function used only in bellman-ford algorithm
+/// </summary>
+/// <param name="bellSet"></param>
+/// <param name="processedNode"></param>
+/// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
 template <typename Cost_t>
 void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>> processedNode) {
 
@@ -74,6 +80,15 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 	}
 }
 
+
+/// <summary>
+/// finds shortes path in graph using bellman-ford algorithm
+/// </summary>
+/// <param name="graph">definition of graph</param>
+/// <param name="startNodeId">starting node</param>
+/// <param name="endNodeId">last node in searching path</param>
+/// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
+/// <returns>tuple: shortest path(deque) and cost of the path</returns>
 template <typename Cost_t>
 auto bellmanFordShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph,
 	id_t startNodeId, id_t endNodeId) {
