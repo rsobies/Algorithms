@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "../NodeInPath.h"
 #include "../Algorithms.h"
-#include "../DijstraSet.h"
 #include <algorithm> 
 
 #define _CRTDBG_MAP_ALLOC
@@ -50,7 +49,7 @@ private:
 TEST_F(AlgorithmsUnit, dijsktraSet) {
 
 	int size = 2;
-	DijstraSet<int> dset(size);
+	DijskstraSet<int> dset(size);
 
 	ASSERT_FALSE(dset.isEmpty());
 
@@ -74,8 +73,6 @@ TEST_F(AlgorithmsUnit, dijsktraSet) {
 
 }
 
-
-
 TEST_F(AlgorithmsUnit, dijsktra) {
 	
 	vector<shared_ptr<NodeInPath<int>>> graf(6);
@@ -97,7 +94,7 @@ TEST_F(AlgorithmsUnit, dijsktra) {
 	graf[5]->addNeighbour(graf[0], 6);
 	graf[5]->addNeighbour(graf[3], 1);
 	{
-		const auto& [path, cost] = findShortestPath(graf, 0, 3);
+		const auto& [path, cost] = dijstraShortestPath(graf, 0, 3);
 
 		ASSERT_EQ(cost, 6);
 
@@ -107,7 +104,7 @@ TEST_F(AlgorithmsUnit, dijsktra) {
 		ASSERT_EQ(path[1], 4);
 	}
 
-	const auto& [path, cost] = findShortestPath(graf, 1, 0);
+	const auto& [path, cost] = dijstraShortestPath(graf, 1, 0);
 
 	ASSERT_EQ(cost, 8);
 
@@ -137,12 +134,53 @@ TEST_F(AlgorithmsUnit, dijsktra2) {
 
 	graf[3]->addNeighbour(graf[0], 7);
 	graf[3]->addNeighbour(graf[2], 6);
-	
+
 	graf[4]->addNeighbour(graf[1], 3);
 	graf[4]->addNeighbour(graf[2], 9);
 	graf[4]->addNeighbour(graf[3], 2);
-	
-	const auto& [path, cost] = findShortestPath(graf, 0, 3);
+
+	const auto& [path, cost] = dijstraShortestPath(graf, 0, 3);
 
 	ASSERT_EQ(cost, 7);
+
+	ASSERT_EQ(path.size(), 3);
+
+	ASSERT_EQ(path[0], 0);
+	ASSERT_EQ(path[1], 4);
+	ASSERT_EQ(path[2], 3);
+}
+
+TEST_F(AlgorithmsUnit, bell) {
+	vector<shared_ptr<NodeInPath<int>>> graf(6);
+
+	for (unsigned int i = 0; i < graf.size(); i++) {
+		graf[i] = make_shared<NodeInPath<int>>(i);
+	}
+
+	graf[0]->addNeighbour(graf[1], 5);
+	
+	graf[1]->addNeighbour(graf[4], 9);
+	graf[1]->addNeighbour(graf[3], 3);
+
+	graf[2]->addNeighbour(graf[0], 4);
+	graf[2]->addNeighbour(graf[1], -4);
+
+	graf[3]->addNeighbour(graf[4], 3);
+	graf[3]->addNeighbour(graf[5], 2);
+
+	graf[4]->addNeighbour(graf[2], -1);
+	graf[4]->addNeighbour(graf[5], -5);
+
+	graf[5]->addNeighbour(graf[0], 9);
+	graf[5]->addNeighbour(graf[2], 8);
+
+	const auto& [path, cost] = bellmanFordShortestPath(graf, 0, 3);
+
+	ASSERT_EQ(cost, 8);
+
+	ASSERT_EQ(path.size(), 3);
+
+	ASSERT_EQ(path[0], 0);
+	ASSERT_EQ(path[1], 1);
+	ASSERT_EQ(path[2], 3);
 }
