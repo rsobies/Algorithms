@@ -11,9 +11,8 @@
 /// it creates memory snapshots and compares them in the destructor
 /// </summary>
 /// <remarks>
-/// in order to provide automatic 
-/// memory check for each testing method, set this class
-/// as member of Test class
+/// in order to provide automatic memory check for each testing method, 
+/// set this class as member of Test class
 /// </remarks>
 class CrtCheckMemory
 {
@@ -79,7 +78,7 @@ TEST_F(AlgorithmsUnit, dijsktraSet) {
 
 }
 
-TEST_F(AlgorithmsUnit, dijsktra) {
+TEST_F(AlgorithmsUnit, dijkstra) {
 	
 	vector<shared_ptr<NodeInPath<int>>> graf(6);
 
@@ -122,7 +121,7 @@ TEST_F(AlgorithmsUnit, dijsktra) {
 	ASSERT_EQ(path[3], 0);
 }
 
-TEST_F(AlgorithmsUnit, dijsktra2) {
+TEST_F(AlgorithmsUnit, dijkstra2) {
 
 	vector<shared_ptr<NodeInPath<int>>> graf(5);
 
@@ -156,7 +155,7 @@ TEST_F(AlgorithmsUnit, dijsktra2) {
 	ASSERT_EQ(path[2], 3);
 }
 
-TEST_F(AlgorithmsUnit, bell) {
+TEST_F(AlgorithmsUnit, bellmanford) {
 	vector<shared_ptr<NodeInPath<int>>> graf(6);
 
 	for (unsigned int i = 0; i < graf.size(); i++) {
