@@ -1,10 +1,14 @@
 #pragma once
 
+/// <summary>
+/// class to hold data related with bellman-ford algorithm
+/// </summary>
+/// <typeparm name="Cost_t">type of cost betwean two nodes</typeparm>
 template <typename Cost_t>
 class BellmanFordSet
 {
 public:
-	BellmanFordSet(id_t size, bool useSynchro=false);
+	BellmanFordSet(id_t size);
 
 	/// <summary>
 	/// set new cost of node
@@ -47,14 +51,11 @@ private:
 	/// </summary>
 	unordered_map<id_t, id_t> prevNodes;
 
-	const bool makeThreadSafe;
-
 	mutex mtx;
 };
 
 template<typename Cost_t>
-inline BellmanFordSet<Cost_t>::BellmanFordSet(id_t size, 
-	bool useSynchro) : makeThreadSafe(useSynchro)
+inline BellmanFordSet<Cost_t>::BellmanFordSet(id_t size)
 {
 	for (id_t i = 0; i < size; i++) {
 		
