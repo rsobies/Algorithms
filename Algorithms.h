@@ -68,12 +68,12 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 
 	for (const auto& neigbourAndCost : neigbours) {
 
-		const auto& [weakNeighbour, neigbourCost] = neigbourAndCost;
+		const auto& [weakNeighbour, edgeCost] = neigbourAndCost;
 
 		auto neighbour = weakNeighbour.lock();
 		
 		if (neighbour != nullptr) {
-			auto newNeigbourCost = bellSet.getCost(processNodeId) + neigbourCost;
+			auto newNeigbourCost = bellSet.getCost(processNodeId) + edgeCost;
 			
 			assert(newNeigbourCost >= 0);
 
@@ -102,7 +102,7 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 		task.wait();
 	}
 
-	//now process the first neigbour
+	//and now process the first neigbour
 	if (firstNeigbour != nullptr) {
 		processNode(bellSet, firstNeigbour);
 	}
