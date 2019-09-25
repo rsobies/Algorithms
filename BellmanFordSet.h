@@ -8,6 +8,11 @@ template <typename Cost_t>
 class BellmanFordSet
 {
 public:
+
+	/// <summary>
+	/// constructor
+	/// </summary>
+	/// <param name="size">number of nodes in graph</param>
 	BellmanFordSet(id_t size);
 
 	/// <summary>
@@ -51,6 +56,9 @@ private:
 	/// </summary>
 	unordered_map<id_t, id_t> prevNodes;
 
+	/// <summary>
+	/// mutex to ensure thread safe, getCost, setCost, getPath
+	/// </summary>
 	mutex mtx;
 };
 
