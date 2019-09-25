@@ -15,5 +15,7 @@
 #include <tuple>
 #include <limits>
 #include <deque>
+#include <mutex>
+#include <future>
 #include "../types.h"
 using namespace std;

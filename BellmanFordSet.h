@@ -4,7 +4,7 @@ template <typename Cost_t>
 class BellmanFordSet
 {
 public:
-	BellmanFordSet(id_t size);
+	BellmanFordSet(id_t size, bool useSynchro=false);
 
 	/// <summary>
 	/// set new cost of node
@@ -47,11 +47,14 @@ private:
 	/// </summary>
 	unordered_map<id_t, id_t> prevNodes;
 
+	const bool makeThreadSafe;
 
+	mutex mtx;
 };
 
 template<typename Cost_t>
-inline BellmanFordSet<Cost_t>::BellmanFordSet(id_t size)
+inline BellmanFordSet<Cost_t>::BellmanFordSet(id_t size, 
+	bool useSynchro) : makeThreadSafe(useSynchro)
 {
 	for (id_t i = 0; i < size; i++) {
 		
@@ -63,25 +66,29 @@ template<typename Cost_t>
 inline void BellmanFordSet<Cost_t>::setCost(id_t id, Cost_t cost)
 {
 	assert(id < costs.size());
+	lock_guard lock(mtx);	
 	costs[id] = cost;
 }
 
 template<typename Cost_t>
 inline void BellmanFordSet<Cost_t>::setCost(id_t id, Cost_t cost, id_t prev)
 {
-	setCost(id, cost);
+	lock_guard lock(mtx);
+	costs[id] = cost;
 	prevNodes[id] = prev;
 }
 
 template<typename Cost_t>
 inline Cost_t BellmanFordSet<Cost_t>::getCost(id_t id)
 {
+	lock_guard lock(mtx);
 	return costs[id];
 }
 
 template<typename Cost_t>
 inline deque<id_t> BellmanFordSet<Cost_t>::getPath(id_t endNode)
 {
+	lock_guard lock(mtx);
 	auto it = prevNodes.find(endNode);
 
 	deque<id_t> path;

@@ -54,17 +54,24 @@ auto dijstraShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph,
 /// <param name="bellSet"></param>
 /// <param name="processedNode"></param>
 /// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
+///<remarks>recursion uses threads, todo: use thread pool</remarks>
 template <typename Cost_t>
 void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>> processedNode) {
 
 	const auto& neigbours = processedNode->getNeighbours();
 	auto processNodeId = processedNode->getId();
 
+	//this node will be processed in the current thread
+	shared_ptr<NodeInPath<Cost_t>> firstNeigbour;
+
+	deque <future<void>> pendingTasks;
+
 	for (const auto& neigbourAndCost : neigbours) {
 
 		const auto& [weakNeighbour, neigbourCost] = neigbourAndCost;
 
 		auto neighbour = weakNeighbour.lock();
+		
 		if (neighbour != nullptr) {
 			auto newNeigbourCost = bellSet.getCost(processNodeId) + neigbourCost;
 			
@@ -74,9 +81,30 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 
 			if (bellSet.getCost(neigbourId) > newNeigbourCost) {
 				bellSet.setCost(neigbourId, newNeigbourCost, processNodeId);
-				processNode(bellSet, neighbour);
+
+				if (firstNeigbour == nullptr) {
+					firstNeigbour = neighbour;
+				}
+				else {
+					
+					pendingTasks.push_back(async(launch::async,
+						[&bellSet, &neighbour]() 
+						{
+							processNode(bellSet, neighbour);
+						}));
+					//processNode(bellSet, neighbour);
+				}
 			}
 		}
+	}
+
+	for (const auto& task : pendingTasks) {
+		task.wait();
+	}
+
+	//now process the first neigbour
+	if (firstNeigbour != nullptr) {
+		processNode(bellSet, firstNeigbour);
 	}
 }
 

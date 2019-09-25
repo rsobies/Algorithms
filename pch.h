@@ -20,6 +20,8 @@
 #include <assert.h>
 #include <deque>
 #include <algorithm>
+#include <mutex>
+#include <future>
 #include "types.h"
 using namespace std;
 
