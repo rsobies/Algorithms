@@ -17,5 +17,6 @@
 #include <deque>
 #include <mutex>
 #include <future>
+#include <queue>
 #include "../types.h"
 using namespace std;

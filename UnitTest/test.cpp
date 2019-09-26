@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "../Algorithms.h"
+#include "../BlockingQueue.h"
 #include <algorithm> 
 
 #define _CRTDBG_MAP_ALLOC
@@ -188,4 +189,15 @@ TEST_F(AlgorithmsUnit, bellmanford) {
 	ASSERT_EQ(path[0], 0);
 	ASSERT_EQ(path[1], 1);
 	ASSERT_EQ(path[2], 3);
+}
+
+TEST_F(AlgorithmsUnit, blockingqueue) {
+	BlockingQueue<int> myq;
+
+	myq.push(2);
+	myq.push(3);
+
+	ASSERT_EQ(myq.pop(), 2);
+	ASSERT_EQ(myq.pop(), 3);
+	
 }
