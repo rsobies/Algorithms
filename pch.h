@@ -24,6 +24,8 @@
 #include <future>
 #include <queue>
 #include <utility>
+#include <thread>
+#include <atomic>
 #include "types.h"
 using namespace std;
 

@@ -5,7 +5,10 @@ class ThreadPool
 {
 public:
 	ThreadPool();
+	virtual ~ThreadPool();
 private:
-	BlockingQueue<future<void>> tasks;
+	atomic_bool stopThreads = false;
+	vector<thread> threads;
+	BlockingQueue<function<void()>> tasks;
 };
 

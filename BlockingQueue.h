@@ -16,6 +16,8 @@ public:
 	/// <remarks>perfect forwarding is used</remarks>
 	void push(Element_t&& newElement);
 
+	tuple<bool, Element_t> tryPop();
+
 	/// <summary>
 	/// gets and removes first element,
 	/// if list is empty it waits until new elements is added
@@ -47,6 +49,21 @@ inline void BlockingQueue<Element_t>::push(Element_t&& newElement)
 	lock_guard lock(mtx);
 	myQueue.push(forward<Element_t>(newElement));
 	condition.notify_one();
+}
+
+template<typename Element_t>
+inline tuple<bool, Element_t> BlockingQueue<Element_t>::tryPop()
+{
+	lock_guard lock(mtx);
+	if (myQueue.empty()) {
+		return tuple(false, Element_t());
+	}
+
+	auto ret = tuple(true, Element_t(move(myQueue.front())));
+	
+	myQueue.pop();
+
+	return ret;
 }
 
 template<typename Element_t>
