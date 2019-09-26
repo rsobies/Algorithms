@@ -1,9 +1,11 @@
 #pragma once
+#include "BlockingQueue.h"
+
 class ThreadPool
 {
 public:
 	ThreadPool();
 private:
-	queue<future<void>> tasks;
+	BlockingQueue<future<void>> tasks;
 };
 

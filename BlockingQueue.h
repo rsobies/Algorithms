@@ -13,6 +13,7 @@ public:
 	/// insert new element to list
 	/// </summary>
 	/// <param name="newElement"></param>
+	/// <remarks>perfect forwarding is used</remarks>
 	void push(Element_t&& newElement);
 
 	/// <summary>
@@ -44,7 +45,7 @@ template<typename Element_t>
 inline void BlockingQueue<Element_t>::push(Element_t&& newElement)
 {
 	lock_guard lock(mtx);
-	myQueue.push(move(newElement));
+	myQueue.push(forward<Element_t>(newElement));
 	condition.notify_one();
 }
 
