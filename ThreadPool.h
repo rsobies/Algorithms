@@ -6,9 +6,10 @@ class ThreadPool
 public:
 	ThreadPool();
 	virtual ~ThreadPool();
+	future<void> submit(function<void()>&& task);
 private:
-	atomic_bool stopThreads = false;
+	atomic_bool stopThreads= ATOMIC_VAR_INIT(false);
 	vector<thread> threads;
-	BlockingQueue<function<void()>> tasks;
+	BlockingQueue<packaged_task<void()>> tasks;
 };
 

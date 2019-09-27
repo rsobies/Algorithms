@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "../Algorithms.h"
-#include "../BlockingQueue.h"
+#include "../ThreadPool.h"
 #include <algorithm> 
 
 #define _CRTDBG_MAP_ALLOC
@@ -200,4 +200,10 @@ TEST_F(AlgorithmsUnit, blockingqueue) {
 	ASSERT_EQ(myq.pop(), 2);
 	ASSERT_EQ(myq.pop(), 3);
 	
+}
+
+TEST_F(AlgorithmsUnit, threadpool) {
+	ThreadPool pool;
+	pool.submit([]() {cout << "in the thread" << endl;});
+	this_thread::sleep_for(chrono::seconds(1));
 }

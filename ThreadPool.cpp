@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ThreadPool.h"
 
-ThreadPool::ThreadPool() :threads(thread::hardware_concurrency())
+ThreadPool::ThreadPool()
 {
 	const auto thread_count = thread::hardware_concurrency();
 
@@ -27,6 +27,17 @@ ThreadPool::~ThreadPool()
 	stopThreads = true;
 
 	for (auto& thread : threads) {
-		thread.join();
+		if (thread.joinable()) {
+			thread.join();
+		}
+		
 	}
+}
+
+future<void> ThreadPool::submit(function<void()>&& task)
+{
+	auto pack = packaged_task<void()>(move(task));
+	auto fut = pack.get_future();
+	tasks.push(packaged_task(move(pack)));
+	return fut;
 }
