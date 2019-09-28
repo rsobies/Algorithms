@@ -1,6 +1,7 @@
 #pragma once
 #include "NodeInPath.h"
 #include "DijskstraSet.h"
+#include "ThreadPool.h"
 
 /// <summary>
 /// finds shortes path in graph using dijstra algorithm
@@ -53,10 +54,11 @@ auto dijstraShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph,
 /// </summary>
 /// <param name="bellSet"></param>
 /// <param name="processedNode"></param>
+/// <param name="threadPool"></param>
 /// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
 ///<remarks>recursion uses threads, todo: use thread pool</remarks>
 template <typename Cost_t>
-void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>> processedNode) {
+void processNode(ThreadPool& threadPool, BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>> processedNode) {
 
 	const auto& neigbours = processedNode->getNeighbours();
 	auto processNodeId = processedNode->getId();
@@ -87,12 +89,19 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 				}
 				else {
 					
+					pendingTasks.push_back(threadPool.submit(
+						[&threadPool, &bellSet, &neighbour]()
+						{
+							processNode(threadPool, bellSet, neighbour);
+						}
+					));
+					/*
 					pendingTasks.push_back(async(launch::async,
 						[&bellSet, &neighbour]() 
 						{
 							processNode(bellSet, neighbour);
 						}));
-					//processNode(bellSet, neighbour);
+					*/
 				}
 			}
 		}
@@ -104,16 +113,15 @@ void processNode(BellmanFordSet<Cost_t>& bellSet, shared_ptr<NodeInPath<Cost_t>>
 
 	//and now process the first neigbour
 	if (firstNeigbour != nullptr) {
-		processNode(bellSet, firstNeigbour);
+		processNode(threadPool, bellSet, firstNeigbour);
 	}
 }
-
 
 /// <summary>
 /// finds shortes path in graph using bellman-ford algorithm
 /// </summary>
 /// <param name="graph">definition of graph</param>
-/// <param name="startNodeId">starting node</param>
+/// <param name="startNodeId">starting node in the path</param>
 /// <param name="endNodeId">last node in searching path</param>
 /// <typeparm name="Cost_t">must be numeric type, type of cost betwean two nodes</typeparm>
 /// <returns>tuple: shortest path(deque) and cost of the path</returns>
@@ -123,10 +131,11 @@ auto bellmanFordShortestPath(const vector<shared_ptr<NodeInPath<Cost_t>>>& graph
 	
 	static_assert(is_arithmetic<Cost_t>::value, "type T must be arithmetic");
 	
-	BellmanFordSet<int> bellFordSet(graph.size());
+	BellmanFordSet<Cost_t> bellFordSet(graph.size());
+	ThreadPool threadPool;
 
 	bellFordSet.setCost(startNodeId, 0);
-	processNode(bellFordSet, graph[startNodeId]);
+	processNode(threadPool, bellFordSet, graph[startNodeId]);
 	
 	auto path = bellFordSet.getPath(endNodeId);
 	auto minCost = bellFordSet.getCost(endNodeId);

@@ -202,8 +202,20 @@ TEST_F(AlgorithmsUnit, blockingqueue) {
 	
 }
 
+
 TEST_F(AlgorithmsUnit, threadpool) {
 	ThreadPool pool;
-	pool.submit([]() {cout << "in the thread" << endl;});
-	this_thread::sleep_for(chrono::seconds(1));
+	
+		deque<future<void>> tasks;
+		for (int i = 0; i < 10; i++) {
+			tasks.push_back(pool.submit([i]() {
+				cout << "in the thread " << i << endl;
+				this_thread::sleep_for(chrono::milliseconds(800));
+				}));
+		}
+
+		for (auto& task : tasks) {
+			task.wait();
+		}
+	
 }

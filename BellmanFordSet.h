@@ -15,6 +15,8 @@ public:
 	/// <param name="size">number of nodes in graph</param>
 	BellmanFordSet(id_t size);
 
+	void reset(id_t size);
+
 	/// <summary>
 	/// set new cost of node
 	/// </summary>
@@ -72,10 +74,22 @@ inline BellmanFordSet<Cost_t>::BellmanFordSet(id_t size)
 }
 
 template<typename Cost_t>
+inline void BellmanFordSet<Cost_t>::reset(id_t size)
+{
+	costs.clear();
+	prevNodes.clear();
+
+	for (id_t i = 0; i < size; i++) {
+		costs[i] = numeric_limits<Cost_t>::max();
+	}
+}
+
+template<typename Cost_t>
 inline void BellmanFordSet<Cost_t>::setCost(id_t id, Cost_t cost)
 {
+	lock_guard lock(mtx);
 	assert(id < costs.size());
-	lock_guard lock(mtx);	
+		
 	costs[id] = cost;
 }
 
