@@ -16,6 +16,12 @@ public:
 	/// <remarks>perfect forwarding is used</remarks>
 	void push(Element_t&& newElement);
 
+	/// <summary>
+	/// gets and removes first element,
+	/// it will not block if list is empty
+	/// </summary>
+	/// <returns>false if list is empty and no elements is return
+	/// true if element is return, secend field contains element</returns>
 	tuple<bool, Element_t> tryPop();
 
 	/// <summary>
