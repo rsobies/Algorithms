@@ -20,8 +20,10 @@ public:
 	/// gets and removes first element,
 	/// it will not block if list is empty
 	/// </summary>
-	/// <returns>false if list is empty and no elements is return
-	/// true if element is return, secend field contains element</returns>
+	/// <returns>
+	/// false if list is empty and no elements is return
+	/// true if element is return, secand field contains element
+	/// </returns>
 	tuple<bool, Element_t> tryPop();
 
 	/// <summary>

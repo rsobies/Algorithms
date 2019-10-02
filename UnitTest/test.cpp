@@ -2,54 +2,18 @@
 #include "../Algorithms.h"
 #include "../ThreadPool.h"
 #include <algorithm> 
+#include "MemoryLeakDetector.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
-/// <summary>
-/// class detecting memory leaks
-/// it creates memory snapshots and compares them in the destructor
-/// </summary>
-/// <remarks>
-/// in order to provide automatic memory check for each testing method, 
-/// set this class as member of Test class
-/// </remarks>
-class CrtCheckMemory
-{
-public:
-	
-	CrtCheckMemory()
-	{		
-		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
-		_CrtMemCheckpoint(&state1);
-	}
-	~CrtCheckMemory()
-	{
-		_CrtMemState state2;
-		_CrtMemState state3;
-
-		_CrtMemCheckpoint(&state2);
-
-		EXPECT_EQ(0, _CrtMemDifference(&state3, &state1, &state2));
-
-		if (_CrtMemDifference(&state3, &state1, &state2))
-			_CrtMemDumpStatistics(&state3);
-	}
-private:
-	_CrtMemState state1;
-};
 
 class AlgorithmsUnit: public testing::Test{
 public:
 
 private:
 	/// <summary>
-	/// check memeber is created at the beginnig of each test method
+	/// memoryCheck is created at the beginnig of each test method
 	/// and is destroyed at the end of test method
 	/// </summary>
-	CrtCheckMemory check;
+	MemoryLeakDetector memoryCheck;
 };
 
 TEST_F(AlgorithmsUnit, dijsktraSet) {
