@@ -33,6 +33,12 @@ public:
 	/// <returns>first element of the queue</returns>
 	Element_t pop();
 
+	/// <summary>
+	/// Size of queue
+	/// </summary>
+	/// <returns></returns>
+	size_t size();
+
 private:
 
 	/// <summary>
@@ -83,4 +89,10 @@ inline Element_t BlockingQueue<Element_t>::pop()
 	myQueue.pop();
 
 	return element;
+}
+
+template<typename Element_t>
+inline size_t BlockingQueue<Element_t>::size()
+{
+	return myQueue.size();
 }

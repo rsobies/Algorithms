@@ -9,12 +9,19 @@ ThreadPool::ThreadPool()
 		threads.push_back(thread([this]() 
 		{
 			while (!stopThreads) {
+				activeThreadsMtx.lock();
 				auto [ok, task] = tasks.tryPop();
 
 				if (ok) {
+					activThreads++;
+					activeThreadsMtx.unlock();
 					task();
+					activeThreadsMtx.lock();
+					activThreads--;
+					activeThreadsMtx.unlock();
 				}
 				else {
+					activeThreadsMtx.unlock();
 					this_thread::yield();
 				}
 			}
@@ -40,4 +47,10 @@ future<void> ThreadPool::submit(function<void()>&& task)
 	auto fut = pack.get_future();
 	tasks.push(packaged_task(move(pack)));
 	return fut;
+}
+
+bool ThreadPool::isFull()
+{
+	lock_guard lock(activeThreadsMtx);
+	return activThreads == maxThreads;
 }
